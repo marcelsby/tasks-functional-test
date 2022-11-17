@@ -79,10 +79,10 @@ public class FunctionalTest {
   private WebDriver acessarAplicacao() {
     ChromeOptions options = new ChromeOptions();
 
-    boolean isHeadlessChrome = Boolean.parseBoolean(System.getProperty("app.chrome.headless"));
+    boolean isDebugChrome = Boolean.parseBoolean(System.getProperty("app.chrome.debug"));
 
-    if (isHeadlessChrome) {
-      options.setHeadless(true);
+    if (!isDebugChrome) {
+      options.addArguments("--no-sandbox", "--headless");
     }
 
     WebDriver driver = new ChromeDriver(options);
