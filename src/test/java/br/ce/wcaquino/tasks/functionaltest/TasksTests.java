@@ -77,6 +77,9 @@ public class TasksTests {
   }
 
   private WebDriver acessarAplicacao() {
+    ChromeOptions options = new ChromeOptions();
+    options.setHeadless(true);
+
     WebDriver driver = new ChromeDriver();
     driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
