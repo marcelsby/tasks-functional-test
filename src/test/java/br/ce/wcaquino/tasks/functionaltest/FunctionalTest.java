@@ -78,7 +78,12 @@ public class FunctionalTest {
 
   private WebDriver acessarAplicacao() {
     ChromeOptions options = new ChromeOptions();
-    options.setHeadless(true);
+
+    boolean isHeadlessChrome = Boolean.parseBoolean(System.getProperty("app.chrome.headless"));
+
+    if (isHeadlessChrome) {
+      options.setHeadless(true);
+    }
 
     WebDriver driver = new ChromeDriver(options);
     driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
