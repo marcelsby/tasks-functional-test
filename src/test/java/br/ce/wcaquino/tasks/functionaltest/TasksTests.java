@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class TasksTests {
 
@@ -76,7 +77,10 @@ public class TasksTests {
   }
 
   private WebDriver acessarAplicacao() {
-    WebDriver driver = new ChromeDriver();
+    ChromeOptions options = new ChromeOptions();
+    options.setHeadless(true);
+
+    WebDriver driver = new ChromeDriver(options);
     driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
     String baseUrl = System.getProperty("app.baseurl");
