@@ -80,7 +80,7 @@ public class TasksTests {
     ChromeOptions options = new ChromeOptions();
     options.setHeadless(true);
 
-    WebDriver driver = new ChromeDriver();
+    WebDriver driver = new ChromeDriver(options);
     driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
     String baseUrl = System.getProperty("app.baseurl");
