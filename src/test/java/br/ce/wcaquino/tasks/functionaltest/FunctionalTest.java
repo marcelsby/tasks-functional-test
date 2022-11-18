@@ -1,17 +1,19 @@
 package br.ce.wcaquino.tasks.functionaltest;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class FunctionalTest {
 
   @Test
-  public void deveSalvarTarefaComSucesso() {
+  public void deveSalvarTarefaComSucesso() throws MalformedURLException {
     WebDriver driver = acessarAplicacao();
 
     try {
@@ -30,7 +32,7 @@ public class FunctionalTest {
   }
 
   @Test
-  public void naoDeveSalvarTarefaSemPrazo() {
+  public void naoDeveSalvarTarefaSemPrazo() throws MalformedURLException {
     WebDriver driver = acessarAplicacao();
 
     try {
@@ -48,7 +50,7 @@ public class FunctionalTest {
   }
 
   @Test
-  public void naoDeveSalvarTarefaSemDescricao() {
+  public void naoDeveSalvarTarefaSemDescricao() throws MalformedURLException {
     WebDriver driver = acessarAplicacao();
 
     try {
@@ -66,7 +68,7 @@ public class FunctionalTest {
   }
 
   @Test
-  public void naoDeveSalvarTarefaComDataPassada() {
+  public void naoDeveSalvarTarefaComDataPassada() throws MalformedURLException {
     WebDriver driver = acessarAplicacao();
 
     try {
@@ -84,17 +86,18 @@ public class FunctionalTest {
     }
   }
 
-  private WebDriver acessarAplicacao() {
-    ChromeOptions options = new ChromeOptions();
+  private WebDriver acessarAplicacao() throws MalformedURLException {
+    ChromeOptions chromeOptions = new ChromeOptions();
 
     boolean isDebugChrome = Boolean.parseBoolean(System.getProperty("app.chrome.debug"));
 
     if (!isDebugChrome) {
-      options.addArguments("--no-sandbox");
-      options.setHeadless(true);
+      chromeOptions.addArguments("--no-sandbox");
+      chromeOptions.setHeadless(true);
     }
 
-    WebDriver driver = new ChromeDriver(options);
+    WebDriver driver = new RemoteWebDriver(new URL(System.getProperty("app.selenium.hub.url")), chromeOptions);
+
     driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 
     String baseUrl = System.getProperty("app.baseurl");
