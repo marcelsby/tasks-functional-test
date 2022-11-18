@@ -82,6 +82,7 @@ public class FunctionalTest {
     boolean isDebugChrome = Boolean.parseBoolean(System.getProperty("app.chrome.debug"));
 
     if (!isDebugChrome) {
+      options.addArguments("--no-sandbox");
       options.setHeadless(true);
     }
 
