@@ -83,11 +83,10 @@ public class FunctionalTest {
 
     if (!isDebugChrome) {
       options.setHeadless(true);
-      options.addArguments("--no-sandbox");
     }
 
     WebDriver driver = new ChromeDriver(options);
-    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 
     String baseUrl = System.getProperty("app.baseurl");
     driver.get(baseUrl);
