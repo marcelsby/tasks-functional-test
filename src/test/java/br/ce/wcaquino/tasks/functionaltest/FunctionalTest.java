@@ -1,12 +1,18 @@
 package br.ce.wcaquino.tasks.functionaltest;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -86,6 +92,22 @@ public class FunctionalTest {
     }
   }
 
+  @Test
+  public void deveExcluirTarefaComSucesso() throws IOException {
+    WebDriver driver = acessarAplicacao();
+
+    try {
+      salvarTarefaPelaApi();
+
+      WebElement deleteTaskButton = driver.findElement(By.cssSelector("#todoTable > tbody > tr:last-child > td:last-child > a"));
+      deleteTaskButton.click();
+      String message = driver.findElement(By.id("message")).getText();
+      Assert.assertEquals("Success!", message);
+    } finally {
+      driver.quit();
+    }
+  }
+
   private WebDriver acessarAplicacao() throws MalformedURLException {
     ChromeOptions chromeOptions = new ChromeOptions();
 
@@ -104,5 +126,22 @@ public class FunctionalTest {
     driver.get(baseUrl);
 
     return driver;
+  }
+
+  private void salvarTarefaPelaApi() throws IOException {
+    OkHttpClient client = new OkHttpClient();
+    String backendBaseUrl = System.getProperty("app.backendbaseurl");
+
+    MediaType JSON = MediaType.get("application/json; charset=utf-8");
+    RequestBody newTaskJson = RequestBody
+        .create("{\"task\":\"Tarefa criada pela API - via Teste Funcional\",\"dueDate\":\"5999-01-01\"}",
+            JSON);
+
+    Request request = new Request.Builder()
+        .url(backendBaseUrl.concat("/todo"))
+        .post(newTaskJson)
+        .build();
+
+    client.newCall(request).execute();
   }
 }
